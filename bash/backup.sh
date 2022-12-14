@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # parameter(s) <mountpoint1> <backupdirectory>
-# example: "/opt/fhem/www/scripts/backup.sh /mnt/FRITZNAS /FHEM/Backups &"
+# example: "/bli/bla/backup.sh /mnt/bli /bli/Backups &"
 
 mopt=$1
 bud=$2

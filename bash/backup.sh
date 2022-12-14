@@ -9,17 +9,28 @@ mo="mount $1"
 umo="umount $1"
 
 if $mo; then
-    echo "$?, mount erfolgreich, führe backup Befehl aus"
+    err=$?
+    echo "$(date +"%Y.%m.%d %T") $err: mount successful, run backup command"
+
+    files=$(ls ${mopt}${bud})
+
+    for file in $files; do
+        arr+=("@${mopt}${bud}/$file")
+    done
+
     perl fhem.pl 7072 "backup"
-    echo "$?, backup Befehl ausgeführt"
+    err=$?
+    echo "$(date +"%Y.%m.%d %T") $err: backup command"
+    sleep 1
+    inotifywait -e close_write ${mopt}${bud}/*.tar.gz ${arr[*]}
+    err=$?
+    echo "$(date +"%Y.%m.%d %T") $err: inotify"
 fi
 
-inotifywait -e close_write ${mopt}${bud}
-echo "$?, inotify"
-
 if
-    [ $? -eq "0" ]
+    [ $err -eq "0" ]
 then
     $umo
-    echo "$?, unmount"
+    err=$?
+    echo "$(date +"%Y.%m.%d %T") $err: umount"
 fi

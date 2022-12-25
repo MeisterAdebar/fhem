@@ -20,8 +20,9 @@ if $mo; then
     perl fhem.pl 7072 "backup"
     err=$?
     echo "$(date +"%Y.%m.%d %T") $err: backup command"
-    #echo "inotifywait -e close_write ${mopt}${bud}/*.tar.gz ${arr[*]}"
     sleep 1
+    err=$?
+    echo "$(date +"%Y.%m.%d %T") $err: sleep 1"    
     inotifywait -e close_write ${mopt}${bud}/*.tar.gz ${arr[*]}
     err=$?
     echo "$(date +"%Y.%m.%d %T") $err: inotify"
@@ -35,7 +36,7 @@ then
     echo "$(date +"%Y.%m.%d %T") $err: sync"
     sleep 3
     err=$?
-    echo "$(date +"%Y.%m.%d %T") $err: sleep"
+    echo "$(date +"%Y.%m.%d %T") $err: sleep 3"
     $umo
     err=$?
     echo "$(date +"%Y.%m.%d %T") $err: umount"
